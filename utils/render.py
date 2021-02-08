@@ -2,15 +2,11 @@
 
 __author__ = 'cleardusk'
 
-import sys
-
-sys.path.append('..')
-
-import cv2
 import numpy as np
+import cv2
 
-from Sim3DR import RenderPipeline
-from utils.functions import plot_image
+from ..Sim3DR import RenderPipeline
+from .functions import plot_image
 from .tddfa_util import _to_ctype
 
 cfg = {

@@ -2,20 +2,15 @@
 
 __author__ = 'cleardusk'
 
-import sys
-
-sys.path.append('..')
-
-import cv2
 import numpy as np
-import os.path as osp
+import cv2
 
-from Sim3DR import rasterize
-from utils.functions import plot_image
-from utils.io import _load, _dump
-from utils.tddfa_util import _to_ctype
 
-make_abs_path = lambda fn: osp.join(osp.dirname(osp.realpath(__file__)), fn)
+from ..Sim3DR import rasterize
+from .functions import plot_image
+from .io import _load, _dump
+from .tddfa_util import _to_ctype
+from .path_manipulation import make_abs_path
 
 
 def calc_ncc_code():
@@ -32,7 +27,7 @@ def calc_ncc_code():
 
 
 def pncc(img, ver_lst, tri, show_flag=False, wfp=None, with_bg_flag=True):
-    ncc_code = _load(make_abs_path('../configs/ncc_code.npy'))
+    ncc_code = _load(make_abs_path(__file__, '../configs/ncc_code.npy'))
 
     if with_bg_flag:
         overlap = img.copy()

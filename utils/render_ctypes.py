@@ -11,17 +11,13 @@ cd ../..
 ```
 """
 
-import sys
-
-sys.path.append('..')
 
 import os.path as osp
 import cv2
 import numpy as np
 import ctypes
-from utils.functions import plot_image
-
-make_abs_path = lambda fn: osp.join(osp.dirname(osp.realpath(__file__)), fn)
+from .functions import plot_image
+from .path_manipulation import make_abs_path
 
 
 class TrianglesMeshRender(object):
@@ -61,7 +57,7 @@ class TrianglesMeshRender(object):
         )
 
 
-render_app = TrianglesMeshRender(clibs=make_abs_path('asset/render.so'))
+render_app = TrianglesMeshRender(clibs=make_abs_path(__file__, 'asset/render.so'))
 
 
 def render(img, ver_lst, tri, alpha=0.6, show_flag=False, wfp=None, with_bg_flag=True):

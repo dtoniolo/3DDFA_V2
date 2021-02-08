@@ -2,21 +2,16 @@
 
 __author__ = 'cleardusk'
 
-import sys
-
-sys.path.append('..')
-
-import cv2
 import numpy as np
-import os.path as osp
 import scipy.io as sio
+import cv2
 
-from Sim3DR import rasterize
-from utils.functions import plot_image
-from utils.io import _load
-from utils.tddfa_util import _to_ctype
 
-make_abs_path = lambda fn: osp.join(osp.dirname(osp.realpath(__file__)), fn)
+from ..Sim3DR import rasterize
+from .functions import plot_image
+from .io import _load
+from .tddfa_util import _to_ctype
+from .path_manipulation import make_abs_path
 
 
 def load_uv_coords(fp):
@@ -33,8 +28,8 @@ def process_uv(uv_coords, uv_h=256, uv_w=256):
     return uv_coords
 
 
-g_uv_coords = load_uv_coords(make_abs_path('../configs/BFM_UV.mat'))
-indices = _load(make_abs_path('../configs/indices.npy'))  # todo: handle bfm_slim
+g_uv_coords = load_uv_coords(make_abs_path(__file__, '../configs/BFM_UV.mat'))
+indices = _load(make_abs_path(__file__, '../configs/indices.npy'))  # todo: handle bfm_slim
 g_uv_coords = g_uv_coords[indices, :]
 
 

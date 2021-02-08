@@ -2,17 +2,18 @@
 
 import os.path as osp
 
-import torch
 import numpy as np
+import torch
 import cv2
 
 from .utils.prior_box import PriorBox
 from .utils.nms_wrapper import nms
 from .utils.box_utils import decode
 from .utils.timer import Timer
-from .utils.functions import check_keys, remove_prefix, load_model
+from .utils.functions import load_model
 from .utils.config import cfg
 from .models.faceboxes import FaceBoxesNet
+from ..utils.path_manipulation import make_abs_path
 
 # some global configs
 confidence_threshold = 0.05
@@ -25,8 +26,7 @@ resize = 1
 scale_flag = True
 HEIGHT, WIDTH = 720, 1080
 
-make_abs_path = lambda fn: osp.join(osp.dirname(osp.realpath(__file__)), fn)
-pretrained_path = make_abs_path('weights/FaceBoxesProd.pth')
+pretrained_path = make_abs_path(__file__, 'weights/FaceBoxesProd.pth')
 
 
 def viz_bbox(img, dets, wfp='out.jpg'):
@@ -39,7 +39,8 @@ def viz_bbox(img, dets, wfp='out.jpg'):
         cv2.rectangle(img, (b[0], b[1]), (b[2], b[3]), (0, 0, 255), 2)
         cx = b[0]
         cy = b[1] + 12
-        cv2.putText(img, text, (cx, cy), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255))
+        cv2.putText(img, text, (cx, cy), cv2.FONT_HERSHEY_DUPLEX, 0.5,
+                    (255, 255, 255))
     cv2.imwrite(wfp, img)
     print(f'Viz bbox to {wfp}')
 
@@ -49,7 +50,8 @@ class FaceBoxes:
         torch.set_grad_enabled(False)
 
         net = FaceBoxesNet(phase='test', size=None, num_classes=2)  # initialize detector
-        self.net = load_model(net, pretrained_path=pretrained_path, load_to_cpu=True)
+        self.net = load_model(net, pretrained_path=pretrained_path,
+                              load_to_cpu=True)
         self.net.eval()
         # print('Finished loading model!')
 
@@ -83,7 +85,8 @@ class FaceBoxes:
         # forward
         _t = {'forward_pass': Timer(), 'misc': Timer()}
         im_height, im_width, _ = img.shape
-        scale_bbox = torch.Tensor([img.shape[1], img.shape[0], img.shape[1], img.shape[0]])
+        scale_bbox = torch.Tensor([img.shape[1], img.shape[0], img.shape[1],
+                                   img.shape[0]])
         img -= (104, 117, 123)
         img = img.transpose(2, 0, 1)
         img = torch.from_numpy(img).unsqueeze(0)
@@ -115,7 +118,8 @@ class FaceBoxes:
         scores = scores[order]
 
         # do NMS
-        dets = np.hstack((boxes, scores[:, np.newaxis])).astype(np.float32, copy=False)
+        dets = np.hstack((boxes, scores[:, np.newaxis])).astype(np.float32,
+                                                                copy=False)
         keep = nms(dets, nms_threshold)
         dets = dets[keep, :]
 

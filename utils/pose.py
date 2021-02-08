@@ -8,9 +8,9 @@ Calculating pose from the output 3DMM parameters, you can also try to use solveP
 
 __author__ = 'cleardusk'
 
-import cv2
+from math import cos, atan2, asin
 import numpy as np
-from math import cos, sin, atan2, asin, sqrt
+import cv2
 
 from .functions import calc_hypotenuse, plot_image
 

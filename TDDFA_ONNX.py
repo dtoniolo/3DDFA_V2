@@ -15,8 +15,7 @@ from utils.functions import (
 from utils.tddfa_util import _parse_param, similar_transform
 from bfm.bfm import BFMModel
 from bfm.bfm_onnx import convert_bfm_to_onnx
-
-make_abs_path = lambda fn: osp.join(osp.dirname(osp.realpath(__file__)), fn)
+from utils.path_manipulation import make_abs_path
 
 
 class TDDFA_ONNX(object):
@@ -26,7 +25,7 @@ class TDDFA_ONNX(object):
         # torch.set_grad_enabled(False)
 
         # load onnx version of BFM
-        bfm_fp = kvs.get('bfm_fp', make_abs_path('configs/bfm_noneck_v3.pkl'))
+        bfm_fp = kvs.get('bfm_fp', make_abs_path(__file__, 'configs/bfm_noneck_v3.pkl'))
         bfm_onnx_fp = bfm_fp.replace('.pkl', '.onnx')
         if not osp.exists(bfm_onnx_fp):
             convert_bfm_to_onnx(
@@ -47,7 +46,7 @@ class TDDFA_ONNX(object):
         self.size = kvs.get('size', 120)
 
         param_mean_std_fp = kvs.get(
-            'param_mean_std_fp', make_abs_path(f'configs/param_mean_std_62d_{self.size}x{self.size}.pkl')
+            'param_mean_std_fp', make_abs_path(__file__, f'configs/param_mean_std_62d_{self.size}x{self.size}.pkl')
         )
 
         onnx_fp = kvs.get('onnx_fp', kvs.get('checkpoint_fp').replace('.pth', '.onnx'))
