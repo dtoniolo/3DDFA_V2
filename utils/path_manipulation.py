@@ -2,9 +2,9 @@ import os
 import os.path as osp
 from pathlib import Path
 import yaml
-import TDDFA
+import TDDFA_package
 
-root_module_path = Path(TDDFA.__path__[0])
+root_module_path = Path(TDDFA_package.__path__[0])
 
 
 def make_abs_path(file, relative_path) -> str:
