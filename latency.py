@@ -5,12 +5,12 @@ __author__ = 'cleardusk'
 import sys
 import argparse
 import cv2
-import yaml
 
-from FaceBoxes import FaceBoxes
-from TDDFA import TDDFA
-from utils.tddfa_util import str2bool
-from FaceBoxes.utils.timer import Timer
+from TDDFA_package.FaceBoxes import FaceBoxes
+from TDDFA_package.TDDFA import TDDFA
+from TDDFA_package.utils.tddfa_util import str2bool
+from TDDFA_package.FaceBoxes.utils.timer import Timer
+from TDDFA_package.utils.path_manipulation import read_config_file
 
 
 def main(args):
@@ -20,7 +20,7 @@ def main(args):
         'recon': Timer()
     }
 
-    cfg = yaml.load(open(args.config), Loader=yaml.SafeLoader)
+    cfg = read_config_file(args.config)
 
     # Init FaceBoxes and TDDFA
     if args.onnx:
